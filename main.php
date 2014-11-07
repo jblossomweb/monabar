@@ -1,5 +1,15 @@
 <?php
+
+require_once "class/shape.class.php";
+require_once "class/circle.class.php";
+require_once "class/rectangle.class.php";
+require_once "class/importer.class.php";
+
 /* Read file and a create an object array of shapes */
+
+$importer = new Importer();
+$shapes = $importer->import('data.csv');
+var_export($shapes);
 
 /* Get the array index of the shape with ID that was passed in and write to screen */
 
@@ -8,6 +18,7 @@
 /* Get the new array index of the shape with ID that was passed in and write to screen */
 
 /* Write any helper methods necessary to support the program */
+
 
 /**
 * Returns the array index of the instance in the list to the caller.
