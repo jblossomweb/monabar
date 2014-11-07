@@ -1,5 +1,16 @@
 <?php
 
+// validate CLI arguments
+$file = isset($argv[1]) ? $argv[1] : 'data.csv'; //default
+if(!file_exists($file)){
+	die("'$file' does not exist. Terminating.\n\n");
+}
+$ID = isset($argv[2]) ? $argv[2] : null; //default
+if(!$ID){
+	die("No shape ID supplied. Terminating.\n\n");
+}
+
+// require classes
 require_once "class/shape.class.php";
 require_once "class/circle.class.php";
 require_once "class/rectangle.class.php";
@@ -8,14 +19,25 @@ require_once "class/importer.class.php";
 /* Read file and a create an object array of shapes */
 
 $importer = new Importer();
-$shapes = $importer->import('data.csv');
-var_export($shapes);
+$shapes = $importer->import($file);
+echo count($shapes)." shapes found.\n";
 
 /* Get the array index of the shape with ID that was passed in and write to screen */
 
+$shape = findShapeById($ID,$shapes);
+if(!$shape){
+	die("Shape ID $ID does not exist. Terminating.\n\n");
+}
+$index = findShapeIndex($shape, $shapes);
+echo "$ID is shape number $index.\n";
+
 /* Sort the shapes by area and write the results to the screen */
+echo "Sorting by Area... ";
+sortByArea($shapes);
 
 /* Get the new array index of the shape with ID that was passed in and write to screen */
+$index = findShapeIndex($shape, $shapes);
+echo "$ID is now shape number $index.\n";
 
 /* Write any helper methods necessary to support the program */
 
@@ -31,9 +53,31 @@ var_export($shapes);
 * @return int Shapes array index
 */
 function findShapeIndex($instance, $shapes) {
-
-// implementation
+	foreach ($shapes as $i=>$shape){
+		if($shape === $instance){
+			return $i;
+		}
+	}
+	return false; //not found
 }
+
+
+/**
+* Return the shape object of supplied ID
+*
+* @param int $id (needle)
+* @param array $shapes (haystack)
+* @return Shape $instance (object)
+*/
+function findShapeById($id,$shapes) {
+	foreach ($shapes as $shape){
+		if($shape->ID == $id){
+			return $shape;
+		}
+	}
+	return false; //not found
+}
+
 
 /**
 * Sorts the list of shapes by area
@@ -41,6 +85,12 @@ function findShapeIndex($instance, $shapes) {
 * @param Shape[] $shapes Collection of shapes
 */
 function sortByArea(&$shapes) {
-
-// implementation
+	usort($shapes,function($a,$b){
+		if($a->getArea() == $b->getArea()){
+			return 0;
+		}
+		return $a->getArea() < $b->getArea() ? -1 : 1;
+	});
+	echo "\n";
 }
+

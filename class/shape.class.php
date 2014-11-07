@@ -2,8 +2,8 @@
 
 abstract class Shape {
 	
-	private $ID;
-
+	public $ID;
+	
 	public function __construct($data){
 		$this->ID = $data['ID'];
 		$this->setProperties($data);
