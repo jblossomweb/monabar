@@ -29,6 +29,8 @@ if(!$shape){
 	die("Shape ID $ID does not exist. Terminating.\n\n");
 }
 $index = findShapeIndex($shape, $shapes);
+
+listShapes($shapes);
 echo "$ID is shape number $index.\n";
 
 /* Sort the shapes by area and write the results to the screen */
@@ -37,6 +39,8 @@ sortByArea($shapes);
 
 /* Get the new array index of the shape with ID that was passed in and write to screen */
 $index = findShapeIndex($shape, $shapes);
+
+listShapes($shapes);
 echo "$ID is now shape number $index.\n";
 
 /* Write any helper methods necessary to support the program */
@@ -94,3 +98,23 @@ function sortByArea(&$shapes) {
 	echo "\n";
 }
 
+/**
+* Displays list of shapes in natural order
+*
+* @param Shape[] $shapes Collection of shapes
+*/
+function listShapes($shapes){
+	echo "\n";
+	foreach ($shapes as $shape){
+		$type = get_class($shape);
+		switch($type){
+			case 'Circle':
+				echo "({$shape->ID}) $type with radius of {$shape->radius()}\n";
+			break;
+			case 'Rectangle':
+			default:
+				echo "[{$shape->ID}] $type with dimensions of {$shape->width()}x{$shape->height()}\n";
+		}
+	}
+	echo "\n";
+}
