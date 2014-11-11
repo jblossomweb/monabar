@@ -14,6 +14,12 @@ class Rectangle extends Shape{
 		return $this->width*$this->height;
 	}
 
-	
+	public function width(){
+		return $this->width;
+	}
+
+	public function height(){
+		return $this->height;
+	}
 
 }

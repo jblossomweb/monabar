@@ -12,4 +12,8 @@ class Circle extends Shape{
 		return pi()*pow($this->radius,2);
 	}
 
+	public function radius(){
+		return $this->radius;
+	}
+
 }
